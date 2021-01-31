@@ -1,11 +1,34 @@
 {
-    "extends": [
-      "plugin:prettier/recommended"
+  "extends": [
+    "eslint:recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
+  "env": {
+    "browser": true
+  },
+
+  "plugins": ["@typescript-eslint/eslint-plugin", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+
+  "rules": {
+    "no-unused-vars": 0,
+    "@typescript-eslint/no-unused-vars": 2,
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "never",
+        "objects": "never",
+        "imports": "never",
+        "exports": "never",
+        "functions": "never"
+      }
     ],
-  
-    "plugins": ["prettier"],
-  
-    "rules": {
-      "prettier/prettier": "error"
-    }
+    "objects": "never",
+    "prettier/prettier": "error",
+    "semi": ["error", "always"]
   }
+}
