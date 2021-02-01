@@ -1,9 +1,5 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["eslint:recommended", "prettier/@typescript-eslint", "plugin:prettier/recommended"],
   "env": {
     "browser": true
   },
@@ -18,17 +14,19 @@
     "no-unused-vars": 0,
     "@typescript-eslint/no-unused-vars": 2,
     "comma-dangle": [
-      "error",
-      {
-        "arrays": "never",
-        "objects": "never",
-        "imports": "never",
-        "exports": "never",
-        "functions": "never"
-      }
+      "never"
+      // ,
+      // {
+      //   "arrays": "never",
+      //   "objects": "never",
+      //   "imports": "never",
+      //   "exports": "never",
+      //   "functions": "never"
+      // }
     ],
     "objects": "never",
     "prettier/prettier": "error",
-    "semi": ["error", "always"]
+    "semi": ["error", "always"],
+    "array-bracket-newline": ["never"]
   }
 }

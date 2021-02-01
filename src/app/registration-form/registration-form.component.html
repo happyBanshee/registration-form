@@ -1,29 +1,41 @@
-<form [formGroup]="form" (ngSubmit)="submitForm()">
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="mainContainer" autocomplete="off">
+  <mat-form-field>
+    <mat-label>First name</mat-label>
+    <input matInput formControlName="firstname" placeholder="First Name" type="text" />
+    <mat-error *ngIf="form.controls.firstname?.errors?.required">
+      Field "First name" is required
+    </mat-error>
+    <mat-error *ngIf="form.controls.firstname?.errors?.invalidFormat">
+      Please enter valid format
+    </mat-error>
+  </mat-form-field>
 
-<label>
-    First name
-    <input type="text" formControlName="firstname">
-</label>
+  <mat-form-field>
+    <mat-label>Last name</mat-label>
+    <input matInput formControlName="lastname" placeholder="Last Name" type="text" />
+  </mat-form-field>
 
-<label>
-    Last name
-    <input type="text" formControlName="lastname">
-</label>
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" placeholder="Email" type="email" />
+    <mat-hint>Please use a valid email format (eg. johndoe@example.com)</mat-hint>
+  </mat-form-field>
 
-<label>
-    Email
-    <input type="text" formControlName="email">
-</label>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" placeholder="Password" />
+    <mat-hint>Your password</mat-hint>
+    <mat-error *ngIf="form.controls.password?.errors?.invalidFormat">
+      Invalid format WHY!!!</mat-error
+    >
+    <mat-error *ngIf="form.controls.password?.errors?.requiredn"> Password is required</mat-error>
+  </mat-form-field>
 
-<label>
-    Password
-    <input type="text" formControlName="password">
-</label>
-<label>
-    Confirm Password
-    <input type="text" formControlName="passwordConfirmation">
-</label>
+  <!-- <mat-form-field>
+        <mat-label>Confirm Password</mat-label>
+        <input matInput formControlName="passwordConfirmation" placeholder="Confirm Password" type="password">
+        <mat-hint >Your password</mat-hint>
+    </mat-form-field> -->
 
-<button type="submit"> Submit</button>
-
+  <button mat-flat-button type="submit">Register</button>
 </form>
