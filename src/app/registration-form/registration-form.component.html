@@ -1,90 +1,98 @@
 <form [formGroup]="form" (ngSubmit)="submitForm()" class="mainContainer" autocomplete="off">
-  <mat-form-field appearance="outline">
-    <mat-label>First name</mat-label>
-    <input matInput [formControl]="firstname" placeholder="First Name" type="text" />
-    <mat-error *ngIf="firstname.errors?.required"> Field "First Name" is required </mat-error>
-    <mat-error *ngIf="firstname.errors?.invalidFormat">
-      "{{ firstname.value }}" may only contain letters, spaces and dashes
-    </mat-error>
-    <button
-      mat-button
-      *ngIf="firstname.value"
-      matSuffix
-      mat-icon-button
-      aria-label="Clear"
-      (click)="firstname.reset()"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
+  <ng-container
+    *ngTemplateOutlet="
+      field;
+      context: {
+        control: firstname,
+        fieldType: 'text',
+        validationErrors: firstnameErrorMessages,
+        label: 'First name'
+      }
+    "
+  ></ng-container>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Last name</mat-label>
-    <input matInput [formControl]="lastname" placeholder="Last Name" type="text" />
-    <mat-error *ngIf="lastname.errors?.required"> Field "Last Name" is required </mat-error>
-    <mat-error *ngIf="lastname.errors?.invalidFormat">
-      "{{ lastname.value }}" may only contain letters, spaces and dashes
-    </mat-error>
-    <button
-      mat-button
-      *ngIf="lastname.value"
-      matSuffix
-      mat-icon-button
-      aria-label="Clear"
-      (click)="lastname.reset()"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
+  <ng-container
+    *ngTemplateOutlet="
+      field;
+      context: {
+        control: lastname,
+        fieldType: 'text',
+        validationErrors: lastnameErrorMessages,
+        label: 'Last name'
+      }
+    "
+  ></ng-container>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Email</mat-label>
-    <input matInput [formControl]="email" placeholder="Email" type="email" />
-    <mat-hint>Please use a valid email format (eg. johndoe@example.com)</mat-hint>
-    <mat-error *ngIf="email.errors?.required"> Field "Email" is required</mat-error>
-    <mat-error *ngIf="email.errors?.invalidFormat">
-      "{{ email.value }}" may only contain letters, digits and dashes
-    </mat-error>
-    <button
-      mat-button
-      *ngIf="email.value"
-      matSuffix
-      mat-icon-button
-      aria-label="Clear"
-      (click)="email.reset()"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
+  <ng-container
+    *ngTemplateOutlet="
+      field;
+      context: {
+        control: email,
+        fieldType: 'email',
+        validationErrors: emailErrorMessages,
+        label: 'Email'
+      }
+    "
+  ></ng-container>
 
+  <ng-container
+    *ngTemplateOutlet="
+      field;
+      context: {
+        control: password,
+        fieldType: 'password',
+        validationErrors: passwordErrorMessages,
+        label: 'Password'
+      }
+    "
+  ></ng-container>
+
+  <ng-container
+    *ngTemplateOutlet="
+      field;
+      context: {
+        control: passwordConfirmation,
+        fieldType: 'password',
+        validationErrors: passwordConfirmationErrorMessages,
+        label: 'Password Confirmation'
+      }
+    "
+  ></ng-container>
+
+  <button mat-flat-button color="accent" type="submit">Register</button>
+</form>
+
+<ng-template
+  #field
+  let-control="control"
+  let-error="validationErrors"
+  let-label="label"
+  let-type="fieldType"
+>
   <mat-form-field appearance="outline">
-    <mat-label>Password</mat-label>
+    <mat-label>{{ label }}</mat-label>
     <input
       matInput
-      [formControl]="password"
-      placeholder="Password"
-      [type]="hide ? 'password' : 'text'"
+      [formControl]="control"
+      placeholder="label"
+      type="type ==='password' && !hide ? 'text' : type"
     />
 
-    <mat-hint>Your password</mat-hint>
-    <mat-error *ngIf="password.errors?.required"> Field "Password" is required</mat-error>
-    <mat-error *ngIf="password.errors?.invalidFormat">
-      <div>
-        "{{ password.value }}" must follow the format: contain lower and uppercase letters, be a
-        minimum of 8 characters, not contain first- or lastname
-      </div>
-    </mat-error>
+    <mat-error *ngIf="control.errors?.required"> {{ error.required }} </mat-error>
+    <mat-error *ngIf="control.errors?.invalidFormat"> {{ error.invalidFormat }} </mat-error>
     <button
       mat-button
-      *ngIf="password.value"
+      *ngIf="control.value"
       matSuffix
       mat-icon-button
       aria-label="Clear"
-      (click)="password.reset()"
+      (click)="control.reset()"
     >
       <mat-icon>close</mat-icon>
     </button>
     <button
+      type="button"
+      *ngIf="type === 'password'"
       mat-icon-button
       matSuffix
       (click)="hide = !hide"
@@ -94,36 +102,4 @@
       <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
     </button>
   </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Password Confirmation</mat-label>
-    <input
-      matInput
-      [formControl]="passwordConfirmation"
-      placeholder="Password Confirmation"
-      type="password"
-    />
-    <mat-hint>Your password</mat-hint>
-    <mat-error *ngIf="passwordConfirmation.errors?.required">
-      Field "Password Confirmation" is required</mat-error
-    >
-    <mat-error *ngIf="passwordConfirmation.errors?.invalidFormat">
-      Passwords should match</mat-error
-    >
-    <button
-      mat-button
-      *ngIf="passwordConfirmation.value"
-      matSuffix
-      mat-icon-button
-      aria-label="Clear"
-      (click)="passwordConfirmation.reset()"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
-    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'">
-      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-    </button>
-  </mat-form-field>
-
-  <button mat-flat-button color="accent" type="submit">Register</button>
-</form>
+</ng-template>

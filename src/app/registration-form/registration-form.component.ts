@@ -31,6 +31,28 @@ export class RegistrationFormComponent {
   form!: FormGroup;
   hide = true;
 
+  firstnameErrorMessages = {
+    required: 'Field "First Name" is required',
+    invalidFormat: 'Field "First Name" may only contain letters, spaces and dashes'
+  };
+  lastnameErrorMessages = {
+    required: 'Field "Last Name" is required',
+    invalidFormat: 'Field "Last Name" may only contain letters, spaces and dashes'
+  };
+  emailErrorMessages = {
+    required: 'Field "Email" is required',
+    invalidFormat: 'Field "Email" may only contain letters, digits and dashes'
+  };
+  passwordErrorMessages = {
+    required: 'Field "Password" is required',
+    invalidFormat:
+      'Field "Password" must follow the format: contain lower and uppercase letters, be a minimum of 8 characters, not contain first- or lastname'
+  };
+  passwordConfirmationErrorMessages = {
+    required: 'Field "Password Confirmation" is required',
+    invalidFormat: 'Passwords should match'
+  };
+
   constructor(private validationService: ValidatorsService) {
     this.firstname = this.createFormControl([
       Validators.required,
