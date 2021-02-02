@@ -6,10 +6,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
-import { StringUtilsService } from './string.utils.service';
 import { ValidatorsService } from './validators.service';
 
 @NgModule({
@@ -21,9 +21,10 @@ import { ValidatorsService } from './validators.service';
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
-  providers: [StringUtilsService, ValidatorsService],
+  providers: [ValidatorsService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

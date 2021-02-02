@@ -1,20 +1,28 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ValidatorsService } from './validators.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidatorsServiceMock implements ValidatorsService {
-  validNameFormat(control: AbstractControl): { [key: string]: any } | null {
+  validNameFormat(control: AbstractControl): ValidationErrors | null {
     return null;
   }
 
-  validEmailFormat(control: AbstractControl): { [key: string]: any } | null {
+  validEmailFormat(control: AbstractControl): ValidationErrors | null {
     return null;
   }
 
-  validPasswordFormat(control: AbstractControl): { [key: string]: any } | null {
+  validPasswordFormat(control: AbstractControl): ValidationErrors | null {
+    console.log('mock called');
+    return null;
+  }
+  passwordsMatch(control: AbstractControl): ValidationErrors | null {
+    console.log('mock called');
+    return null;
+  }
+  passwordContainsNoFirstLastName(control: AbstractControl): ValidationErrors | null {
     console.log('mock called');
     return null;
   }

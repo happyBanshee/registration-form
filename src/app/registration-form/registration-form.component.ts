@@ -1,24 +1,8 @@
-import { stringify } from '@angular/compiler/src/util';
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, last } from 'rxjs/operators';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { StringUtilsService } from '../string.utils.service';
-import { ThrowStmt } from '@angular/compiler';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ValidatorsService } from '../validators.service';
 
 const USERNAME_MAX_LENGTH = 150;
-
-interface UserDetails {
-  firstname: string;
-  lastname: string;
-  email: string;
-}
-
-interface RegistrationDetails extends UserDetails {
-  password: string;
-}
 
 enum FormControlNames {
   FirstName = 'firstname',
@@ -32,77 +16,63 @@ type RegisrationFormControls = {
   [key in FormControlNames]: FormControl;
 };
 
-@UntilDestroy()
 @Component({
   selector: 'app-registration-form',
   templateUrl: './registration-form.component.html',
   styleUrls: ['./registration-form.component.scss']
 })
-export class RegistrationFormComponent implements OnInit {
-  controls: RegisrationFormControls = {
-    [FormControlNames.FirstName]: new FormControl('', [
+export class RegistrationFormComponent {
+  firstname!: FormControl;
+  lastname!: FormControl;
+  email!: FormControl;
+  password!: FormControl;
+  passwordConfirmation!: FormControl;
+  controls!: RegisrationFormControls;
+  form!: FormGroup;
+  hide = true;
+
+  constructor(private validationService: ValidatorsService) {
+    this.firstname = this.createFormControl([
       Validators.required,
       Validators.maxLength(USERNAME_MAX_LENGTH),
       this.validationService.validNameFormat
-    ]),
-    [FormControlNames.LastName]: new FormControl('', [
+    ]);
+    this.lastname = this.createFormControl([
       Validators.required,
       Validators.maxLength(USERNAME_MAX_LENGTH),
       this.validationService.validNameFormat
-    ]),
-    [FormControlNames.Email]: new FormControl('', [
+    ]);
+    this.email = this.createFormControl([
       Validators.required,
       this.validationService.validEmailFormat
-    ]),
-    [FormControlNames.Password]: new FormControl('', [
+    ]);
+    this.password = this.createFormControl([
       Validators.required,
       this.validationService.validPasswordFormat
-    ]),
-    [FormControlNames.PasswordConfiration]: new FormControl('', [Validators.required])
-  };
+    ]);
+    this.passwordConfirmation = this.createFormControl([Validators.required]);
 
-  form: FormGroup = new FormGroup(this.controls);
-
-  constructor(private validationService: ValidatorsService) {}
-  get firstname(): AbstractControl | null {
-    return this.form.get(FormControlNames.FirstName);
-  }
-  get lastname(): AbstractControl | null {
-    return this.form.get(FormControlNames.LastName);
-  }
-  get password(): AbstractControl | null {
-    return this.form.get(FormControlNames.Password);
-  }
-  get passwordConfirmation(): AbstractControl | null {
-    return this.form.get(FormControlNames.PasswordConfiration);
-  }
-
-  ngOnInit(): void {
-    this.firstname?.valueChanges
-      .pipe(distinctUntilChanged(), untilDestroyed(this), debounceTime(200))
-      .subscribe((_firstname: string) => {
-        console.log('firstname updated', _firstname);
-
-        this.password?.updateValueAndValidity();
-      });
-
-    this.lastname?.valueChanges
-      .pipe(distinctUntilChanged(), untilDestroyed(this), debounceTime(200))
-      .subscribe((_lastname: string) => {
-        console.log('lastname updated', _lastname);
-        this.password?.updateValueAndValidity();
-      });
-
-    this.password?.valueChanges
-      .pipe(distinctUntilChanged(), untilDestroyed(this), debounceTime(200))
-      .subscribe((password: string) => {
-        console.log('password updated', password);
-
-        this.passwordConfirmation?.updateValueAndValidity();
-      });
+    this.controls = {
+      [FormControlNames.FirstName]: this.firstname,
+      [FormControlNames.LastName]: this.lastname,
+      [FormControlNames.Email]: this.email,
+      [FormControlNames.Password]: this.password,
+      [FormControlNames.PasswordConfiration]: this.passwordConfirmation
+    };
+    this.form = new FormGroup(this.controls, [
+      this.validationService.passwordContainsNoFirstLastName,
+      this.validationService.passwordsMatch
+    ]);
   }
 
   submitForm(): void {
     console.log('form', this.form.status);
+  }
+
+  private createFormControl(validators: ValidatorFn[]): FormControl {
+    return new FormControl('', {
+      validators: validators,
+      updateOn: 'blur'
+    });
   }
 }

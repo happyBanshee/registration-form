@@ -43,6 +43,20 @@ describe('ValidatorsService', () => {
     expect(service.validNameFormat(field)).toEqual({ invalidFormat: true });
   });
 
+  it('Invalid name format: "----"', () => {
+    const field = new FormControl('----');
+    expect(service.validNameFormat(field)).toEqual({ invalidFormat: true });
+  });
+
+  it('Invalid name format: ""', () => {
+    const field = new FormControl('');
+    expect(service.validNameFormat(field)).toEqual({ invalidFormat: true });
+  });
+
+  it('Invalid name format: "    "', () => {
+    const field = new FormControl('    ');
+    expect(service.validNameFormat(field)).toEqual({ invalidFormat: true });
+  });
   it('Invalid name format: "Bakker/.="', () => {
     const field = new FormControl('Bakker/.=');
     expect(service.validNameFormat(field)).toEqual({ invalidFormat: true });

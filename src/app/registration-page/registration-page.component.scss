@@ -1,6 +1,12 @@
-.wrapper{
-    justify-content: center;
-    display:grid;
-    flex-direction: column;
-    margin: 20px auto;
+.wrapper {
+  justify-content: center;
+  display: flex;
+  margin: 20px auto;
+
+  //   @media screen and (min-width: 1024px) {
+
+  .form {
+    width: 400px;
+    // }
+  }
 }
