@@ -18,8 +18,9 @@
     "module": "es2020",
     "lib": ["es2018", "dom"],
     "paths": {
-      "@customTypes/*": ["src/types/*"],
-      "@utils/*": ["src/utils/*"]
+      "@shared/*": ["src/shared/*"],
+      "@utils/*": ["src/utils/*"],
+      "@enviroment/*": ["src/environments/*"]
     }
   },
   "angularCompilerOptions": {

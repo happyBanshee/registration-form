@@ -1,6 +1,8 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ValidatorsService } from '../validators.service';
-import { ValidatorsServiceMock } from '../validators.service.mock';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ValidatorsService } from '../services/validators.service';
+import { ValidatorsServiceMock } from '../services/validators.service.mock';
 import { RegistrationFormComponent } from './registration-form.component';
 
 describe('RegistrationFormComponent', () => {
@@ -10,6 +12,7 @@ describe('RegistrationFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MatSnackBarModule, HttpClientModule],
       declarations: [RegistrationFormComponent],
       providers: [{ provide: ValidatorsService, useClass: ValidatorsServiceMock }]
     }).compileComponents();

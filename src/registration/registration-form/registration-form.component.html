@@ -6,7 +6,8 @@
         control: firstname,
         fieldType: 'text',
         validationErrors: firstnameErrorMessages,
-        label: 'First name'
+        label: 'First name',
+        e2eId: 'firstname'
       }
     "
   ></ng-container>
@@ -18,7 +19,8 @@
         control: lastname,
         fieldType: 'text',
         validationErrors: lastnameErrorMessages,
-        label: 'Last name'
+        label: 'Last name',
+        e2eId: 'lastname'
       }
     "
   ></ng-container>
@@ -30,7 +32,9 @@
         control: email,
         fieldType: 'email',
         validationErrors: emailErrorMessages,
-        label: 'Email'
+        label: 'Email',
+        placeholder: 'johndoe@domain.com',
+        e2eId: 'email'
       }
     "
   ></ng-container>
@@ -42,7 +46,8 @@
         control: password,
         fieldType: 'password',
         validationErrors: passwordErrorMessages,
-        label: 'Password'
+        label: 'Password',
+        e2eId: 'password'
       }
     "
   ></ng-container>
@@ -54,12 +59,22 @@
         control: passwordConfirmation,
         fieldType: 'password',
         validationErrors: passwordConfirmationErrorMessages,
-        label: 'Password Confirmation'
+        label: 'Confirm Password',
+        placeholder: 'Password',
+        e2eId: 'passwordConfirmation'
       }
     "
   ></ng-container>
 
-  <button mat-flat-button color="accent" type="submit">Register</button>
+  <button
+    mat-flat-button
+    color="primary"
+    disabled="{{ !!form.invalid }}"
+    type="submit"
+    class="submit"
+  >
+    Sign Up
+  </button>
 </form>
 
 <ng-template
@@ -68,14 +83,16 @@
   let-error="validationErrors"
   let-label="label"
   let-type="fieldType"
+  let-placeholder="placeholder"
+  let-e2eId="e2eId"
 >
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" [attr.data-e2e-id]="e2eId">
     <mat-label>{{ label }}</mat-label>
     <input
       matInput
       [formControl]="control"
-      placeholder="label"
-      type="type ==='password' && !hide ? 'text' : type"
+      placeholder="{{ placeholder || label }}"
+      type="{{ type === 'password' && !hide ? 'text' : type }}"
     />
 
     <mat-error *ngIf="control.errors?.required"> {{ error.required }} </mat-error>
@@ -91,6 +108,7 @@
       <mat-icon>close</mat-icon>
     </button>
     <button
+      data-e2e-id="togglePassword"
       type="button"
       *ngIf="type === 'password'"
       mat-icon-button

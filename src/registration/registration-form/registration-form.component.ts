@@ -1,6 +1,11 @@
+import { isNull } from '@angular/compiler/src/output/output_ast';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { ValidatorsService } from '../validators.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RegistrationDetails } from '@shared/types/user-details';
+import { RegistrationService } from 'src/backend-api/registration.service';
+import { ObjectUtils } from '@utils/obj.utils';
+import { ValidatorsService } from '../services/validators.service';
 
 const USERNAME_MAX_LENGTH = 150;
 
@@ -33,11 +38,13 @@ export class RegistrationFormComponent {
 
   firstnameErrorMessages = {
     required: 'Field "First Name" is required',
-    invalidFormat: 'Field "First Name" may only contain letters, spaces and dashes'
+    invalidFormat:
+      'Field "First Name" may only contain letters, spaces and dashes, be between 2- 150 characters'
   };
   lastnameErrorMessages = {
     required: 'Field "Last Name" is required',
-    invalidFormat: 'Field "Last Name" may only contain letters, spaces and dashes'
+    invalidFormat:
+      'Field "Last Name" may only contain letters, spaces and dashes, be between 2- 150 characters'
   };
   emailErrorMessages = {
     required: 'Field "Email" is required',
@@ -46,14 +53,18 @@ export class RegistrationFormComponent {
   passwordErrorMessages = {
     required: 'Field "Password" is required',
     invalidFormat:
-      'Field "Password" must follow the format: contain lower and uppercase letters, be a minimum of 8 characters, not contain first- or lastname'
+      'Field "Password" must follow the format: contain lower and uppercase letters, be between 8 - 150 characters, not contain first- or lastname'
   };
   passwordConfirmationErrorMessages = {
     required: 'Field "Password Confirmation" is required',
     invalidFormat: 'Passwords should match'
   };
 
-  constructor(private validationService: ValidatorsService) {
+  constructor(
+    private validationService: ValidatorsService,
+    private _snackBar: MatSnackBar,
+    private apiService: RegistrationService
+  ) {
     this.firstname = this.createFormControl([
       Validators.required,
       Validators.maxLength(USERNAME_MAX_LENGTH),
@@ -86,11 +97,50 @@ export class RegistrationFormComponent {
       this.validationService.passwordsMatch
     ]);
   }
-
-  submitForm(): void {
-    console.log('form', this.form.status);
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 
+  private mapDetails(): RegistrationDetails | undefined {
+    const mappedDetails: RegistrationDetails = {
+      email: this.form.value[FormControlNames.Email],
+      firstname: this.form.value[FormControlNames.FirstName],
+      lastname: this.form.value[FormControlNames.LastName],
+      password: this.form.value[FormControlNames.Password]
+    };
+
+    if (Object.values(mappedDetails).some((field) => ObjectUtils.isNullOrUndefined(field))) {
+      return undefined;
+    }
+
+    return mappedDetails;
+  }
+
+  submitForm(): void {
+    const formDetails = this.mapDetails();
+
+    if (ObjectUtils.isNullOrUndefined(formDetails)) {
+      this.showFailedFeedback();
+      throw new Error('Unable to parse data to valid format');
+    }
+
+    this.apiService.submitRegistrationDetails(formDetails).subscribe({
+      next: () => {
+        this.showSuccessFeedback(formDetails.email);
+      },
+      error: (error) => {
+        this.showFailedFeedback();
+        console.error('There was an error!', error);
+      }
+    });
+  }
+
+  private showSuccessFeedback(email: string): void {
+    this.openSnackBar(`Your application for ${email} was successfully submitted`, 'Close');
+  }
+  private showFailedFeedback(): void {
+    this.openSnackBar(`Something went wrong. Your application was not submitted.`, 'Close');
+  }
   private createFormControl(validators: ValidatorFn[]): FormControl {
     return new FormControl('', {
       validators: validators,

@@ -23,11 +23,6 @@ describe('ValidatorsService', () => {
     expect(service.validNameFormat(form.get('firstname') as FormControl)).toEqual(null);
   });
 
-  it('Valid name format: "àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ"', () => {
-    const field = new FormControl('àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ');
-    expect(service.validNameFormat(field)).toEqual(null);
-  });
-
   it('Valid name format: "Van Dijk"', () => {
     const field = new FormControl('Van Dijk');
     expect(service.validNameFormat(field)).toEqual(null);

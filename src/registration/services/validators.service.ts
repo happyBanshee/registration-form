@@ -1,56 +1,51 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { ValidationError } from '@customTypes/validation-error';
+import { AbstractControl } from '@angular/forms';
 import { StringUtils } from '@utils/string.utils';
-// import { StringUtils } from '../string.utils';
 
-const PASSWORD_LENGTH = 8;
+const PASSWORD_MIN_LENGTH = 8;
+const PASSWORD_MAX_LENGTH = 150;
+
+export interface ValidationError {
+  invalidFormat?: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidatorsService {
   validNameFormat(control: AbstractControl): ValidationError | null {
-    const constrainRegex = /^(?=.*[a-zA-Z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F'\s-]*$)/;
+    const constrainRegex = new RegExp(/^([\w]+[\s-]?[\w]+[\s-]?)+$/);
 
     return constrainRegex.test(control.value) ? null : { invalidFormat: true };
   }
 
   validEmailFormat(control: AbstractControl): ValidationError | null {
-    const emailRegex = /^((?!\.)[\w-_.]*[^.])(@[a-zA-Z][a-zA-Z0-9_-]+)(\.\w+(\.\w+)?[^.\W])$/;
+    const emailRegex = new RegExp(
+      /^((?!\.)[\w-_.]*[^.])(@[a-zA-Z][a-zA-Z0-9_-]+)(\.\w+(\.\w+)?[^.\W])$/,
+      'gm'
+    );
 
     return emailRegex.test(control.value) ? null : { invalidFormat: true };
   }
 
   validPasswordFormat(control: AbstractControl): ValidationError | null {
-    const minlengthPattern = `.{${PASSWORD_LENGTH},}`;
-    const lowerCaseRegex = new RegExp(/(?=.*[a-z])/g);
-    const upperCaseRegex = new RegExp(/(?=.*[A-Z])/g);
-    const minLengthRegex = new RegExp(minlengthPattern, 'g');
-    const formValues = control.parent?.value;
+    const constrainPattern = `(^(?=.*[A-Z])(?=.*[a-z]).{${PASSWORD_MIN_LENGTH},${PASSWORD_MAX_LENGTH}}$)`;
+    const constrainRegex = new RegExp(constrainPattern);
 
-    if (!formValues) {
-      return null;
-    }
-
-    return lowerCaseRegex.test(control.value) &&
-      upperCaseRegex.test(control.value) &&
-      minLengthRegex.test(control.value)
-      ? null
-      : { invalidFormat: true };
+    return constrainRegex.test(control.value) ? null : { invalidFormat: true };
   }
 
   passwordsMatch(form: AbstractControl): ValidationError | null {
-    const formValues = form.parent?.value;
+    const password: string = form.get('password')?.value;
+    const passwordConfirmation: string = form.get('passwordConfirmation')?.value;
 
-    if (!formValues) {
-      return null;
+    if (
+      StringUtils.areStrings([password, passwordConfirmation]) &&
+      password !== passwordConfirmation
+    ) {
+      form.get('passwordConfirmation')?.setErrors({ invalidFormat: true });
     }
-
-    return StringUtils.areStrings([formValues.password, formValues.passwordConfirmation]) &&
-      formValues.password === formValues.passwordConfirmation
-      ? null
-      : { invalidFormat: true };
+    return null;
   }
 
   passwordContainsNoFirstLastName(form: AbstractControl): ValidationError | null {
@@ -65,7 +60,7 @@ export class ValidatorsService {
     ) {
       const passwordContainsName: boolean = [firstname, lastname]
         .filter((substring) => !!substring)
-        .some((substring) => password.includes(substring));
+        .some((substring) => password.toLocaleLowerCase().includes(substring.toLocaleLowerCase()));
 
       if (passwordContainsName) {
         form.get('password')?.setErrors({ invalidFormat: true });
