@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-
 import { ValidatorsService } from './validators.service';
 
 describe('ValidatorsService', () => {
@@ -17,7 +16,6 @@ describe('ValidatorsService', () => {
     });
   });
 
-  //validNameFormat
   it('Valid name format: "Samantha"', () => {
     form.get('firstname')?.setValue('Samantha');
     expect(service.validNameFormat(form.get('firstname') as FormControl)).toEqual(null);
@@ -57,7 +55,6 @@ describe('ValidatorsService', () => {
     expect(service.validNameFormat(field)).toEqual({ invalidFormat: true });
   });
 
-  //validEmailFormat
   it('Valid email format: "test@cany.email"', () => {
     const field = new FormControl('test@cany.email');
     expect(service.validEmailFormat(field)).toEqual(null);
@@ -91,8 +88,6 @@ describe('ValidatorsService', () => {
     const field = new FormControl(' test.user,test@domain.com');
     expect(service.validEmailFormat(field)).toEqual({ invalidFormat: true });
   });
-
-  //validPasswordFormat
 
   it('Valid password format: "Password1"', () => {
     const form = new FormGroup({

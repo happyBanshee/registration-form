@@ -13,17 +13,7 @@
   "rules": {
     "no-unused-vars": 0,
     "@typescript-eslint/no-unused-vars": 2,
-    "comma-dangle": [
-      "never"
-      // ,
-      // {
-      //   "arrays": "never",
-      //   "objects": "never",
-      //   "imports": "never",
-      //   "exports": "never",
-      //   "functions": "never"
-      // }
-    ],
+    "comma-dangle": ["never"],
     "objects": "never",
     "prettier/prettier": "error",
     "semi": ["error", "always"],

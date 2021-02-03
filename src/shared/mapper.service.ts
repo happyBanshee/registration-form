@@ -16,4 +16,14 @@ export class MapperService {
     };
     return mappedObj;
   }
+
+  mapRegistrationDetailsDtoToModel(obj: RegistrationDetailsDto): RegistrationDetails {
+    const mappedObj: RegistrationDetailsDto = {
+      email: obj.email,
+      firstname: obj.firstname,
+      lastname: obj.lastname,
+      password: obj.password
+    };
+    return mappedObj;
+  }
 }
