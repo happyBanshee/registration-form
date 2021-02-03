@@ -1,0 +1,123 @@
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="mainContainer" autocomplete="off">
+  <ng-container
+    *ngTemplateOutlet="
+      field;
+      context: {
+        control: firstname,
+        fieldType: 'text',
+        validationErrors: firstnameErrorMessages,
+        label: 'First name',
+        e2eId: 'firstname'
+      }
+    "
+  ></ng-container>
+
+  <ng-container
+    *ngTemplateOutlet="
+      field;
+      context: {
+        control: lastname,
+        fieldType: 'text',
+        validationErrors: lastnameErrorMessages,
+        label: 'Last name',
+        e2eId: 'lastname'
+      }
+    "
+  ></ng-container>
+
+  <ng-container
+    *ngTemplateOutlet="
+      field;
+      context: {
+        control: email,
+        fieldType: 'email',
+        validationErrors: emailErrorMessages,
+        label: 'Email',
+        placeholder: 'johndoe@domain.com',
+        e2eId: 'email'
+      }
+    "
+  ></ng-container>
+
+  <ng-container
+    *ngTemplateOutlet="
+      field;
+      context: {
+        control: password,
+        fieldType: 'password',
+        validationErrors: passwordErrorMessages,
+        label: 'Password',
+        e2eId: 'password'
+      }
+    "
+  ></ng-container>
+
+  <ng-container
+    *ngTemplateOutlet="
+      field;
+      context: {
+        control: passwordConfirmation,
+        fieldType: 'password',
+        validationErrors: passwordConfirmationErrorMessages,
+        label: 'Confirm Password',
+        placeholder: 'Password',
+        e2eId: 'passwordConfirmation'
+      }
+    "
+  ></ng-container>
+
+  <button
+    mat-flat-button
+    color="primary"
+    disabled="{{ !!form.invalid }}"
+    type="submit"
+    class="submit"
+  >
+    Sign Up
+  </button>
+</form>
+
+<ng-template
+  #field
+  let-control="control"
+  let-error="validationErrors"
+  let-label="label"
+  let-type="fieldType"
+  let-placeholder="placeholder"
+  let-e2eId="e2eId"
+>
+  <mat-form-field appearance="outline" [attr.data-e2e-id]="e2eId">
+    <mat-label>{{ label }}</mat-label>
+    <input
+      matInput
+      [formControl]="control"
+      placeholder="{{ placeholder || label }}"
+      type="{{ type === 'password' && !hide ? 'text' : type }}"
+    />
+
+    <mat-error *ngIf="control.errors?.required"> {{ error.required }} </mat-error>
+    <mat-error *ngIf="control.errors?.invalidFormat"> {{ error.invalidFormat }} </mat-error>
+    <button
+      mat-button
+      *ngIf="control.value"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="control.reset()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+    <button
+      data-e2e-id="togglePassword"
+      type="button"
+      *ngIf="type === 'password'"
+      mat-icon-button
+      matSuffix
+      (click)="hide = !hide"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide"
+    >
+      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+    </button>
+  </mat-form-field>
+</ng-template>

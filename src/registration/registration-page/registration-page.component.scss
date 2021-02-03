@@ -1,0 +1,31 @@
+.wrapper {
+  height: 100%;
+  justify-content: center;
+  display: flex;
+  background-color: #eee;
+  min-width: 600px;
+
+  @media screen and (min-width: 600px) {
+    padding: 20px 0;
+  }
+
+  .title {
+    display: flex;
+    font-size: 1.9em;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .form {
+    min-width: 600px;
+    @media screen and (min-width: 600px) {
+      width: 100%;
+    }
+    @media screen and (min-width: 768px) {
+      width: 600px;
+    }
+    @media screen and (min-width: 992px) {
+      width: 700px;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+
+  .submit {
+    margin: 0 auto;
+    width: 150px;
+    height: 3em;
+    font-size: 1.1em;
+  }
+}

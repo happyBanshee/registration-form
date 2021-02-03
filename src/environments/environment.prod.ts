@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  domain: 'http://localhost:4200',
+  apiUrl: 'https://demo-api.now.sh'
 };
