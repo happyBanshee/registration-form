@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '@enviroment/environment';
+import { environment } from '@environment/environment';
 
 @Component({
   selector: 'app-page-not-found',
@@ -9,7 +9,7 @@ import { environment } from '@enviroment/environment';
 export class PageNotFoundComponent implements OnInit {
   redirectUrl: string | undefined;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.redirectUrl = environment.domain;

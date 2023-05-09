@@ -1,6 +1,6 @@
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { environment } from '@enviroment/environment';
+import { environment } from '@environment/environment';
 import { RegistrationService } from './registration.service';
 import { RegistrationDetailsDto } from 'src/shared/types/user-details';
 

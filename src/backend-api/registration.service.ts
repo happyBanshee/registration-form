@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { MapperService } from '@shared/mapper.service';
   providedIn: 'root'
 })
 export class RegistrationService {
-  constructor(private http: HttpClient, private mapper: MapperService) {}
+  constructor(private http: HttpClient, private mapper: MapperService) { }
 
   public submitRegistrationDetails(formData: RegistrationDetails): Observable<any> {
     const mappedObj = this.mapper.mapRegistrationDetailsToDto(formData);

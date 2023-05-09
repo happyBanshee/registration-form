@@ -30,12 +30,12 @@ describe('RegistrationFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('passowrd should validate when firstname is updated', () => {
+  it('password should validate when firstname is updated', () => {
     component.firstname?.setValue('test');
     expect(mockService.validPasswordFormat).toHaveBeenCalledTimes(1);
   });
 
-  it('passowrd should validate when lastname is updated', () => {
+  it('password should validate when lastname is updated', () => {
     component.lastname?.setValue('test');
     expect(mockService.validPasswordFormat).toHaveBeenCalledTimes(1);
   });
