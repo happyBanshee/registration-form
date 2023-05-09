@@ -1,4 +1,3 @@
-import { isNull } from '@angular/compiler/src/output/output_ast';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,10 +13,10 @@ enum FormControlNames {
   LastName = 'lastname',
   Email = 'email',
   Password = 'password',
-  PasswordConfiration = 'passwordConfirmation'
+  PasswordConfirmation = 'passwordConfirmation'
 }
 
-type RegisrationFormControls = {
+type RegistrationFormControls = {
   [key in FormControlNames]: FormControl;
 };
 
@@ -32,7 +31,7 @@ export class RegistrationFormComponent {
   email!: FormControl;
   password!: FormControl;
   passwordConfirmation!: FormControl;
-  controls!: RegisrationFormControls;
+  controls!: RegistrationFormControls;
   form!: FormGroup;
   hide = true;
 
@@ -90,7 +89,7 @@ export class RegistrationFormComponent {
       [FormControlNames.LastName]: this.lastname,
       [FormControlNames.Email]: this.email,
       [FormControlNames.Password]: this.password,
-      [FormControlNames.PasswordConfiration]: this.passwordConfirmation
+      [FormControlNames.PasswordConfirmation]: this.passwordConfirmation
     };
     this.form = new FormGroup(this.controls, [
       this.validationService.passwordContainsNoFirstLastName,

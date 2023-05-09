@@ -20,7 +20,7 @@
     "paths": {
       "@shared/*": ["src/shared/*"],
       "@utils/*": ["src/utils/*"],
-      "@enviroment/*": ["src/environments/*"]
+      "@environment/*": ["src/environments/*"]
     }
   },
   "angularCompilerOptions": {
